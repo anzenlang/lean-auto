@@ -1,5 +1,5 @@
 import Auto.MathlibEmulator
-import Std.Data.Nat.Lemmas
+import Batteries.Data.Nat.Lemmas
 
 namespace Auto
 
@@ -50,7 +50,7 @@ def ofNat'WF (n : Nat) :=
     | _ => .xI (ofNat'WF (n / 2))
 decreasing_by rw [← h]; apply ofNat'WFAux; assumption
 
-theorem ofNat'WF.inductionOn.{u}
+def ofNat'WF.inductionOn.{u}
   {motive : Nat → Sort u} (x : Nat)
   (ind : ∀ x, motive ((x + 2) / 2) → motive (x + 2))
   (base₀ : motive 0) (base₁ : motive 1) : motive x :=
@@ -60,7 +60,7 @@ theorem ofNat'WF.inductionOn.{u}
   | x' + 2 => ind x' (inductionOn ((x' + 2) / 2) ind base₀ base₁)
 decreasing_by apply ofNat'WFAux; rfl
 
-theorem ofNat'WF.induction
+def ofNat'WF.induction
   {motive : Nat → Sort u}
   (ind : ∀ x, motive ((x + 2) / 2) → motive (x + 2))
   (base₀ : motive 0) (base₁ : motive 1) : ∀ x, motive x :=
@@ -98,7 +98,8 @@ theorem ofNat'WF.doubleSucc_xI (n : Nat) :
       rw [Nat.add_mod_right]; rw [Nat.add_mod]
       rw [Nat.mul_mod]; simp
     rw [heq]; simp
-    have heq' : Nat.succ ((2 * n' + 3) / 2) = n' + 2 := by
+    have heq' : ((2 * n' + 3) / 2) + 1 = n' + 2 := by
+      rw [← Nat.succ_eq_add_one]
       apply congrArg; rw [Nat.add_comm];
       rw [Nat.add_mul_div_left _ _ (by simp)]; rw [Nat.add_comm]
     rw [heq']

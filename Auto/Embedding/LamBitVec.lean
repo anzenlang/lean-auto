@@ -1,8 +1,8 @@
 import Auto.Embedding.LamConv
 import Auto.Lib.NatExtra
-import Std.Data.Int.Lemmas
-import Std.Data.Fin.Lemmas
-import Std.Data.BitVec.Lemmas
+import Batteries.Data.Int.Lemmas
+import Batteries.Data.Fin.Lemmas
+import Batteries.Data.BitVec.Lemmas
 
 namespace Auto.Embedding.Lam
 
@@ -132,10 +132,10 @@ namespace BVLems
         rw [Nat.shiftRight_eq_div_pow]; apply (Nat.le_iff_div_eq_zero (Nat.two_pow_pos _)).mpr
         rw [Nat.pred_lt_iff_le (Nat.two_pow_pos _)]
         apply Nat.le_trans (Nat.sub_le _ _) (Nat.pow_le_pow_of_le_right (.step .refl) h)
-      apply eq_of_val_eq; rw [toNat_ofNatLt, hzero]
-      rw [toNat_neg, Int.mod_def', Int.emod]; dsimp; rw [Nat.zero_mod]
+      apply eq_of_val_eq; rw [toNat_ofNatLt, ← Nat.pred_eq_sub_one, hzero]
+      rw [toNat_neg, Int.mod_def', Int.emod]; simp [Nat.zero_mod]
       rw [Int.subNatNat_of_sub_eq_zero ((Nat.sub_eq_zero_iff_le).mpr (Nat.two_pow_pos _))]
-      rw [Int.toNat_ofNat, BitVec.toNat_ofNat]
+      rw [Int.toNat_ofNat]
       cases n <;> try rfl
       case succ n =>
         have hlt : 2 ≤ 2 ^ Nat.succ n := @Nat.pow_le_pow_of_le_right 2 (.step .refl) 1 (.succ n) (Nat.succ_le_succ (Nat.zero_le _))

@@ -1,5 +1,5 @@
 import Auto.Embedding.Lift
-import Std.Data.List.Lemmas
+import Batteries.Data.List.Lemmas
 
 namespace Auto.Embedding.Lam₂
 

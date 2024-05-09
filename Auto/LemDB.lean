@@ -48,7 +48,7 @@ partial def LemDB.toHashSet : LemDB → AttrM (HashSet Name)
     return ret
 
 private def throwUndeclaredLemDB (dbname action : Name) : AttrM α := do
-  let cmdstr := "#declare_lemdb " ++ dbname
+  let cmdstr := (Name.mkSimple "#declare_lemdb ") ++ dbname
   throwError ("Please declare lemma database using " ++
     s!"command {repr cmdstr} before {action}")
 
@@ -64,7 +64,7 @@ def registerAddLemToDB : IO Unit :=
         let state' := state.insert dbname (.addLemma decl db)
         modifyEnv fun env => lemDBExt.modifyState env fun _ => state'
       else
-        throwUndeclaredLemDB dbname "adding lemma to it"
+        throwUndeclaredLemDB dbname (Name.mkSimple "adding lemma to it")
     erase := fun _ => do
       throwError "Lemmas cannot be erased from lemma database"
   }
@@ -103,7 +103,7 @@ def elabprintlemdb : CommandElab := fun stx => do
   match stx with
   | `(printlemdb | #print_lemdb $dbname) =>
     let .some db ← liftCoreM <| findLemDB dbname.getId
-      | liftCoreM <| throwUndeclaredLemDB dbname.getId "printing it"
+      | liftCoreM <| throwUndeclaredLemDB dbname.getId (Name.mkSimple "printing it")
     let hset ← liftCoreM (db.toHashSet)
     logInfoAt stx m!"{hset.toList}"
   | _ => throwUnsupportedSyntax

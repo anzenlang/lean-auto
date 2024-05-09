@@ -1,5 +1,5 @@
 import Auto.Tactic
-import Std.Data.BitVec
+import Batteries.Data.BitVec
 set_option auto.smt true
 set_option auto.smt.trust true
 set_option trace.auto.smt.printCommands true
