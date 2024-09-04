@@ -591,12 +591,14 @@ theorem LamThmValid.prepend (H : LamThmValid lval lctx t)
 theorem LamEquiv.ofLamValid
   (heq : LamValid lval lctx (LamTerm.mkEq s t₁ t₂)) :
   LamEquiv lval lctx s t₁ t₂ :=
+  let _ := s -- silence unused variables lint
   let ⟨.ofApp _ (.ofApp _ (.ofBase (.ofEq _)) wft₁) wft₂, heq'⟩ := heq
   ⟨wft₁, ⟨wft₂, heq'⟩⟩
 
 theorem LamEquiv.ofLamValidSymm
   (heq : LamValid lval lctx (LamTerm.mkEq s t₁ t₂)) :
   LamEquiv lval lctx s t₂ t₁ :=
+  let _ := s -- silence unused variables lint
   let ⟨.ofApp _ (.ofApp _ (.ofBase (.ofEq _)) wft₁) wft₂, heq'⟩ := heq
   ⟨wft₂, wft₁, fun _ => Eq.symm (heq' _)⟩
 
@@ -822,7 +824,7 @@ theorem LamEquiv.congrs {args : List (LamSort × LamTerm × LamTerm)}
     | ⟨s, t₁, t₂⟩ =>
       have ⟨wfFn, _⟩ := hFn
       have ⟨fnTy', wfAp⟩ := LamWF.generalizeTy
-        (wfApp.fnWFOfMkAppN (args:=tail.map (fun (s, t₁, snd) => (s, t₁))))
+        (wfApp.fnWFOfMkAppN (args:=tail.map (fun (s, t₁, _snd) => (s, t₁))))
       rcases LamWF.unique wfFn wfAp.getFn with ⟨⟨⟩, ⟨⟩⟩
       apply IH wfApp (fnTy:=fnTy'); dsimp [LamTerm.mkAppN] at wfApp
       case hFn =>
@@ -1017,7 +1019,7 @@ theorem LamEquiv.eqFunextH
 theorem LamEquiv.funextF
   (eAp : LamEquiv lval (pushLCtx argTy lctx) resTy (.app argTy fn₁.bvarLift (.bvar 0)) (.app argTy fn₂.bvarLift (.bvar 0))) :
   LamEquiv lval lctx (.func argTy resTy) fn₁ fn₂ := by
-  have ⟨wfFnAp₁, wfFnAp₂, hFnAp⟩ := eAp
+  have ⟨wfFnAp₁, wfFnAp₂, _hFnAp⟩ := eAp
   apply LamEquiv.ofLamValid (s:=.func argTy resTy) _
   have hEqValid := LamValid.ofLamEquiv eAp
   apply LamValid.mpLamEquiv (s:=.base .prop) (LamValid.revert1F hEqValid)

@@ -765,7 +765,7 @@ section push
     (xs : HList lctxty tys) {rty : Nat → α} (lctx : ∀ n, lctxty (rty n)) :
     HEq (HList.ofFun (pushLCtxsDep xs lctx) n) xs :=
     match xs, n with
-    | .nil, n => by
+    | .nil, _n => by
       dsimp at heq; rw [← heq]; rfl
     | .cons (ty:=ty) (tys:=tys) x xs, _ => by
       dsimp at heq; rw [← heq]

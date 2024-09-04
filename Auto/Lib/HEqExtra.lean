@@ -3,9 +3,14 @@ namespace Auto
 theorem heq_of_cast_eq : ∀ (e : α = β) (_ : cast e a = a'), HEq a a'
   | rfl, h => Eq.recOn h (HEq.refl _)
 
+set_option linter.unusedVariables false
 def HEq.tyEq {α β : Sort u} (x : α) (y : β) (H : HEq x y) : α = β :=
   match β, y, H with
   | .(α), .(x), HEq.refl _ => Eq.refl _
+
+def HEq.tyEq' {α β : Sort u} (x : α) (y : β) (H : HEq x y) : α = β := by
+  cases H
+  rfl
 
 def HEq.funext {γ : Sort u} {α β : γ → Sort v}
   (x : ∀ (u : γ), α u) (y : ∀ (u : γ), β u) (H : ∀ u, HEq (x u) (y u)) : HEq x y :=

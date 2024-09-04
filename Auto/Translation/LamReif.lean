@@ -1312,7 +1312,7 @@ def reifMapLam0Arg4NatLit : HashMap (Name × Name) (Array ((Nat → Expr) × (Na
         (fun n => .app (.const ``BitVec.sshiftRight []) (.lit (.natVal n)), fun n => .base (.bvashr n))])
   ]
 
-def processLam0Arg2 (e fn arg₁ arg₂ : Expr) : MetaM (Option LamTerm) := do
+def processLam0Arg2 (e fn arg₁ _arg₂ : Expr) : MetaM (Option LamTerm) := do
   let .const fnName _ := fn
     | return .none
   if arg₁.isConst then
@@ -1332,7 +1332,7 @@ def processLam0Arg2 (e fn arg₁ arg₂ : Expr) : MetaM (Option LamTerm) := do
               return .some (tcon n)
   return .none
 
-def processLam0Arg3 (e fn arg₁ arg₂ arg₃ : Expr) : MetaM (Option LamTerm) := do
+def processLam0Arg3 (e fn arg₁ arg₂ _arg₃ : Expr) : MetaM (Option LamTerm) := do
   match fn with
   | .const ``OfNat.ofNat _ =>
     match arg₁ with
@@ -1358,7 +1358,7 @@ def processLam0Arg3 (e fn arg₁ arg₂ arg₃ : Expr) : MetaM (Option LamTerm) 
     | _ => return .none
   | _ => return .none
 
-def processLam0Arg4 (e fn arg₁ arg₂ arg₃ arg₄ : Expr) : MetaM (Option LamTerm) := do
+def processLam0Arg4 (e fn arg₁ arg₂ _arg₃ _arg₄ : Expr) : MetaM (Option LamTerm) := do
   let .const fnName _ := fn
     | return .none
   if arg₁.isConst && arg₂.isConst then

@@ -42,7 +42,7 @@ theorem LamTerm.maxEVarSucc_intro1H?
 theorem LamValid.intro1H? (H : LamValid lval lctx t)
   (heq : LamTerm.intro1H? t = .some (s, p)) : LamValid lval (pushLCtx s lctx) p :=
   match t, heq with
-  | .app s' (.base (.forallE s)) t, Eq.refl _ =>
+  | .app s' (.base (.forallE s)) _t, Eq.refl _ =>
     have ⟨wfl, vl⟩ := H
     match wfl with
     | .ofApp _ (.ofBase (.ofForallE _)) Hp => by

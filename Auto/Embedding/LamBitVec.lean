@@ -68,7 +68,9 @@ namespace BVLems
       rw [Nat.mod_eq_of_lt]; rcases a with ⟨⟨a, isLt⟩⟩;
       apply Nat.le_trans isLt; apply Nat.pow_le_pow_of_le_right (Nat.le_step .refl) hle
 
-  theorem toNat_sub (a b : BitVec n) : (a - b).toNat = (a.toNat + (2 ^ n - b.toNat)) % (2 ^ n) := rfl
+  theorem toNat_sub (a b : BitVec n) : (a - b).toNat = (a.toNat + (2 ^ n - b.toNat)) % (2 ^ n) := by
+    rw [Nat.add_comm]
+    rfl
 
   theorem toNat_neg (a : BitVec n) : (-a).toNat = (2^n - a.toNat) % (2^n) := by
     rw [neg_def]; unfold BitVec.neg; rw [toNat_ofNat]
@@ -155,12 +157,14 @@ namespace BVLems
     apply eq_of_val_eq; rw [toNat_ofNat, toNat_zeroExtend]
 
   theorem ofNat_add (n a b : Nat) : BitVec.ofNat n (a + b) = BitVec.ofNat n a + BitVec.ofNat n b := by
-    apply congrArg (f:=BitVec.ofFin); apply Fin.eq_of_val_eq
-    dsimp [Fin.ofNat']; rw [Nat.add_mod]; rfl
+    apply congrArg (f:=BitVec.ofFin)
+    apply Fin.eq_of_val_eq
+    simp only [Fin.val_ofNat', BitVec.toNat_ofNat, Nat.add_mod_mod, Nat.mod_add_mod]
 
   theorem ofNat_mod_pow2 (n a : Nat) : BitVec.ofNat n (a % (2 ^ n)) = BitVec.ofNat n a := by
-    apply congrArg (f:=BitVec.ofFin); apply Fin.eq_of_val_eq
-    dsimp [Fin.ofNat']; apply Nat.mod_mod
+    apply congrArg (f:=BitVec.ofFin)
+    apply Fin.eq_of_val_eq
+    simp only [Fin.val_ofNat', Nat.mod_mod]
 
   theorem ofNat_sub (n a b : Nat) : BitVec.ofNat n (a - b) =
     if (a < b) then 0#n else (BitVec.ofNat n a - BitVec.ofNat n b) := by
@@ -186,7 +190,7 @@ namespace BVLems
 
   theorem ofNat_mul (n a b : Nat) : BitVec.ofNat n (a * b) = BitVec.ofNat n a * BitVec.ofNat n b := by
     apply congrArg (f:=BitVec.ofFin); apply Fin.eq_of_val_eq
-    dsimp [Fin.ofNat']; rw [Nat.mul_mod]; rfl
+    simp ; rw [Nat.mul_mod]
 
   theorem shl_equiv (a : BitVec n) (b : Nat) : a <<< b = if (b < n) then (a <<< BitVec.ofNat n b) else 0 := by
     cases hdec : decide (b < n)

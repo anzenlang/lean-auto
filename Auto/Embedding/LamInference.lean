@@ -177,7 +177,7 @@ section Skolemization
   theorem LamTerm.maxEVarSucc_skolemize? (heq : LamTerm.skolemize? t eidx lctx = .some (s, t')) :
     t'.maxEVarSucc ≤ max t.maxEVarSucc (.succ eidx) :=
     match t, heq with
-    | .app _ (.base (.existE s)) p, Eq.refl _ => by
+    | .app _ (.base (.existE s)) _p, Eq.refl _ => by
       dsimp [maxEVarSucc]; rw [LamTerm.maxEVarSucc_bvarApps];
       simp [Nat.max, Nat.max_zero_left]; apply Nat.le_refl
 

@@ -100,7 +100,7 @@ def LamTerm.prop_ne_equiv_eq_not? (t : LamTerm) : Option LamTerm :=
 theorem LamTerm.maxEVarSucc_prop_ne_equiv_eq_not?
   (heq : prop_ne_equiv_eq_not? t = .some t') : t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base (.eq (.base .prop))) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base (.eq (.base .prop))) lhs) _rhs), Eq.refl _ => by
     dsimp [maxEVarSucc]; simp [Nat.max, Nat.max_zero_left, Nat.max_zero_right]
 
 theorem LamEquiv.prop_ne_equiv_eq_not?
@@ -108,7 +108,7 @@ theorem LamEquiv.prop_ne_equiv_eq_not?
   (heq : LamTerm.prop_ne_equiv_eq_not? t = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base (.eq (.base .prop))) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base (.eq (.base .prop))) lhs) _rhs), Eq.refl _ => by
     cases wft.getArg.getFn.getFn.getBase
     match wft with
     | .ofApp _ (.ofBase .ofNot) (.ofApp _ (.ofApp _ (.ofBase (.ofEq _)) Hlhs) Hrhs) =>
@@ -295,7 +295,7 @@ theorem LamTerm.maxEVarSucc_eq_false_equiv?
   (heq : LamTerm.eq_false_equiv? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) lhs) (.base .falseE), Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) _lhs) (.base .falseE), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left, Nat.max_zero_right]
 
 theorem LamEquiv.eq_false_equiv?
@@ -303,7 +303,7 @@ theorem LamEquiv.eq_false_equiv?
   (heq : LamTerm.eq_false_equiv? t = .some t') :
   s = .base .prop ∧ LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) lhs) (.base .falseE), Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) _lhs) (.base .falseE), Eq.refl _ => by
     cases wft.getFn.getFn.getBase; exists rfl, wft
     match wft with
     | .ofApp _ (.ofApp _ (.ofBase (.ofEq _)) Hlhs) (.ofBase .ofFalseE) =>
@@ -331,7 +331,7 @@ theorem LamTerm.maxEVarSucc_ne_true_equiv_eq_false?
   (heq : LamTerm.ne_true_equiv_eq_false? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base (.eq _)) lhs) (.base .trueE)), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base (.eq _)) _lhs) (.base .trueE)), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left, Nat.max_zero_right]
 
 theorem LamEquiv.ne_true_equiv_eq_false?
@@ -339,7 +339,7 @@ theorem LamEquiv.ne_true_equiv_eq_false?
   (heq : LamTerm.ne_true_equiv_eq_false? t = .some t') :
   s = .base .prop ∧ LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base (.eq _)) lhs) (.base .trueE)), Eq.refl _ =>
+  | .app _ (.base .not) (.app _ (.app _ (.base (.eq _)) _lhs) (.base .trueE)), Eq.refl _ =>
     match wft with
     | .ofApp _ (.ofBase .ofNot) (.ofApp _ (.ofApp _ (.ofBase (.ofEq _)) Hlhs) (.ofBase .ofTrueE)) => by
       apply And.intro rfl
@@ -363,7 +363,7 @@ theorem LamTerm.maxEVarSucc_ne_false_equiv_eq_true?
   (heq : LamTerm.ne_false_equiv_eq_true? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base (.eq _)) lhs) (.base .falseE)), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base (.eq _)) _lhs) (.base .falseE)), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left, Nat.max_zero_right]
 
 theorem LamEquiv.ne_false_equiv_eq_true?
@@ -371,7 +371,7 @@ theorem LamEquiv.ne_false_equiv_eq_true?
   (heq : LamTerm.ne_false_equiv_eq_true? t = .some t') :
   s = .base .prop ∧ LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base (.eq _)) lhs) (.base .falseE)), Eq.refl _ =>
+  | .app _ (.base .not) (.app _ (.app _ (.base (.eq _)) _lhs) (.base .falseE)), Eq.refl _ =>
     match wft with
     | .ofApp _ (.ofBase .ofNot) (.ofApp _ (.ofApp _ (.ofBase (.ofEq _)) Hlhs) (.ofBase .ofFalseE)) => by
       apply And.intro rfl
@@ -395,7 +395,7 @@ def LamTerm.maxEVarSucc_not_eq_true_equiv_eq_false?
   (heq : LamTerm.not_eq_true_equiv_eq_false? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) (.base .trueE), Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) _lhs)) (.base .trueE), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left]
 
 theorem LamEquiv.not_eq_true_equiv_eq_false?
@@ -403,7 +403,7 @@ theorem LamEquiv.not_eq_true_equiv_eq_false?
   (heq : LamTerm.not_eq_true_equiv_eq_false? t = .some t') :
   s = .base .prop ∧ LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) (.base .trueE), Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) _lhs)) (.base .trueE), Eq.refl _ => by
     cases wft.getFn.getFn.getBase; cases wft.getFn.getArg.getFn.getBase.getPcst
     match wft with
     | .ofApp _ (.ofApp _ (.ofBase (.ofEq _)) (.ofApp _ (.ofBase .ofNot) Hlhs)) (.ofBase .ofTrueE) =>
@@ -429,7 +429,7 @@ def LamTerm.maxEVarSucc_not_eq_false_equiv_eq_true?
   (heq : LamTerm.not_eq_false_equiv_eq_true? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) (.base .falseE), Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) _lhs)) (.base .falseE), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left]
 
 theorem LamEquiv.not_eq_false_equiv_eq_true?
@@ -437,7 +437,7 @@ theorem LamEquiv.not_eq_false_equiv_eq_true?
   (heq : LamTerm.not_eq_false_equiv_eq_true? t = .some t') :
   s = .base .prop ∧ LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) (.base .falseE), Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) _lhs)) (.base .falseE), Eq.refl _ => by
     cases wft.getFn.getFn.getBase; cases wft.getFn.getArg.getFn.getBase.getPcst
     match wft with
     | .ofApp _ (.ofApp _ (.ofBase (.ofEq _)) (.ofApp _ (.ofBase .ofNot) Hlhs)) (.ofBase .ofFalseE) =>
@@ -497,7 +497,7 @@ theorem LamTerm.maxEVarSucc_not_eq_equiv_eq_not?
   (heq : LamTerm.not_eq_equiv_eq_not? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) rhs, Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) _rhs, Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left]
 
 theorem LamEquiv.not_eq_equiv_eq_not?
@@ -505,7 +505,7 @@ theorem LamEquiv.not_eq_equiv_eq_not?
   (heq : LamTerm.not_eq_equiv_eq_not? t = .some t') :
   s = .base .prop ∧ LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) rhs, Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) _rhs, Eq.refl _ => by
     cases wft.getFn.getArg.getFn.getBase
     match wft with
     | .ofApp _ (.ofApp _ (.ofBase (.ofEq _)) (.ofApp _ (.ofBase .ofNot) Hlhs)) Hrhs =>
@@ -529,7 +529,7 @@ theorem LamTerm.maxEVarSucc_not_eq_not_equiv_eq?
   (heq : LamTerm.not_eq_not_equiv_eq? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) (.app _ (.base .not) rhs), Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) (.app _ (.base .not) _rhs), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left]
 
 theorem LamEquiv.not_eq_not_equiv_eq?
@@ -537,7 +537,7 @@ theorem LamEquiv.not_eq_not_equiv_eq?
   (heq : LamTerm.not_eq_not_equiv_eq? t = .some t') :
   s = .base .prop ∧ LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) (.app _ (.base .not) rhs), Eq.refl _ => by
+  | .app _ (.app _ (.base (.eq _)) (.app _ (.base .not) lhs)) (.app _ (.base .not) _rhs), Eq.refl _ => by
     cases wft.getFn.getFn.getBase
     match wft with
     | .ofApp _ (.ofApp _ (.ofBase (.ofEq _)) (.ofApp _ (.ofBase .ofNot) Hlhs)) (.ofApp _ (.ofBase .ofNot) Hrhs) =>
@@ -560,7 +560,7 @@ theorem LamTerm.maxEVarSucc_propext?
   (heq : LamTerm.propext? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.app _ (.base .iff) lhs) rhs, Eq.refl _ => by
+  | .app _ (.app _ (.base .iff) lhs) _rhs, Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left]
 
 theorem LamEquiv.propext?
@@ -568,7 +568,7 @@ theorem LamEquiv.propext?
   (heq : LamTerm.propext? t = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.app _ (.base .iff) lhs) rhs, Eq.refl _ => by
+  | .app _ (.app _ (.base .iff) lhs) _rhs, Eq.refl _ => by
     match wft with
     | .ofApp _ (.ofApp _ (.ofBase .ofIff) Hlhs) Hrhs =>
       exists (.mkIff Hlhs Hrhs); exists (.mkEq Hlhs Hrhs); intro lctxTerm
@@ -595,7 +595,7 @@ theorem LamTerm.maxEVarSucc_not_and_equiv_not_or_not?
   (heq : LamTerm.not_and_equiv_not_or_not? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base .and) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base .and) lhs) _rhs), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left, Nat.max_zero_right]
 
 theorem LamEquiv.not_and_equiv_not_or_not?
@@ -603,7 +603,7 @@ theorem LamEquiv.not_and_equiv_not_or_not?
   (heq : LamTerm.not_and_equiv_not_or_not? t = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base .and) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base .and) lhs) _rhs), Eq.refl _ => by
     cases wft.getArg.getFn.getFn.getBase.getPcst
     match wft with
     | .ofApp _ _ (.ofApp _ (.ofApp _ _ Hlhs) Hrhs) =>
@@ -627,7 +627,7 @@ theorem LamTerm.maxEVarSucc_not_or_equiv_not_and_not?
   (heq : LamTerm.not_or_equiv_not_and_not? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base .or) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base .or) lhs) _rhs), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left, Nat.max_zero_right]
 
 theorem LamEquiv.not_or_equiv_not_and_not?
@@ -635,7 +635,7 @@ theorem LamEquiv.not_or_equiv_not_and_not?
   (heq : LamTerm.not_or_equiv_not_and_not? t = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base .or) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base .or) lhs) _rhs), Eq.refl _ => by
     cases wft.getArg.getFn.getFn.getBase.getPcst
     match wft with
     | .ofApp _ _ (.ofApp _ (.ofApp _ _ Hlhs) Hrhs) =>
@@ -658,7 +658,7 @@ theorem LamTerm.maxEVarSucc_propeq?
   (heq : LamTerm.propeq? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app (.base .prop) (.app _ (.base (.eq _)) lhs) rhs, Eq.refl _ => by
+  | .app (.base .prop) (.app _ (.base (.eq _)) lhs) _rhs, Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left, Nat.max_zero_right, Nat.max_eq_left]
 
 theorem propeq_equiv_eq' {a b : GLift Prop} : (a = b) ↔
@@ -670,7 +670,7 @@ theorem LamEquiv.propeq?
   (heq : LamTerm.propeq? t = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app (.base .prop) (.app _ (.base (.eq _)) lhs) rhs, Eq.refl _ => by
+  | .app (.base .prop) (.app _ (.base (.eq _)) lhs) _rhs, Eq.refl _ => by
     cases wft.getFn.getFn.getBase
     match wft with
     | .ofApp _ (.ofApp _ (.ofBase (.ofEq _)) Hlhs) Hrhs =>
@@ -693,7 +693,7 @@ theorem LamTerm.maxEVarSucc_imp_equiv_not_or?
   (heq : LamTerm.imp_equiv_not_or? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.app _ (.base .imp) lhs) rhs, Eq.refl _ => by
+  | .app _ (.app _ (.base .imp) lhs) _rhs, Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left]
 
 theorem LamEquiv.imp_equiv_not_or?
@@ -701,7 +701,7 @@ theorem LamEquiv.imp_equiv_not_or?
   (heq : LamTerm.imp_equiv_not_or? t = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.app _ (.base .imp) lhs) rhs, Eq.refl _ => by
+  | .app _ (.app _ (.base .imp) lhs) _rhs, Eq.refl _ => by
     cases wft.getFn.getFn.getBase.getPcst
     match wft with
     | .ofApp _ (.ofApp _ _ Hlhs) Hrhs =>
@@ -725,7 +725,7 @@ theorem LamTerm.maxEVarSucc_not_imp_equiv_and_not?
   (heq : LamTerm.not_imp_equiv_and_not? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base .imp) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base .imp) lhs) _rhs), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left]
 
 theorem LamEquiv.not_imp_equiv_and_not?
@@ -733,7 +733,7 @@ theorem LamEquiv.not_imp_equiv_and_not?
   (heq : LamTerm.not_imp_equiv_and_not? t = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.base .not) (.app _ (.app _ (.base .imp) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app _ (.app _ (.base .imp) lhs) _rhs), Eq.refl _ => by
     cases wft.getArg.getFn.getFn.getBase.getPcst
     match wft with
     | .ofApp _ _ (.ofApp _ (.ofApp _ _ Hlhs) Hrhs) =>
@@ -757,7 +757,7 @@ theorem LamTerm.maxEVarSucc_propne?
   (heq : LamTerm.propne? t = .some t') :
   t'.maxEVarSucc = t.maxEVarSucc :=
   match t, heq with
-  | .app _ (.base .not) (.app (.base .prop) (.app _ (.base (.eq _)) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app (.base .prop) (.app _ (.base (.eq _)) lhs) _rhs), Eq.refl _ => by
     simp [maxEVarSucc, Nat.max, Nat.max_zero_left, Nat.max_zero_right, Nat.max_eq_left]
 
 theorem propne_equiv_eq' {a b : GLift Prop} : (a ≠ b) ↔
@@ -769,7 +769,7 @@ theorem LamEquiv.propne?
   (heq : LamTerm.propne? t = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.base .not) (.app (.base .prop) (.app _ (.base (.eq _)) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app (.base .prop) (.app _ (.base (.eq _)) lhs) _rhs), Eq.refl _ => by
     cases wft.getArg.getFn.getFn.getBase
     match wft with
     | .ofApp _ (.ofBase .ofNot) (.ofApp _ (.ofApp _ (.ofBase (.ofEq _)) Hlhs) Hrhs) =>

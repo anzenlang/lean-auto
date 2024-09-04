@@ -262,7 +262,7 @@ private def ConstInst.toExprAux (args : List (Option Expr))
 def ConstInst.toExpr (ci : ConstInst) : MetaM Expr := do
   let type ← instantiateMVars (← ci.head.inferType)
   let nargs := (Nat.succ <$> ci.argsIdx[ci.argsIdx.size - 1]?).getD 0
-  let mut args : Array (Option Expr) := (Array.mk (List.range nargs)).map (fun n => .none)
+  let mut args : Array (Option Expr) := (Array.mk (List.range nargs)).map (fun _n => .none)
   for (arg, idx) in ci.argsInst.zip ci.argsIdx do
     args := args.setD idx (.some arg)
   let .some ret := ConstInst.toExprAux args.data [] ci.head.toExpr type

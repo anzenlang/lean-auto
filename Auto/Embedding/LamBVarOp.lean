@@ -416,23 +416,23 @@ theorem LamTerm.bvarLowersIdx?_spec :
     dsimp [bvarLowersIdx?]
     cases t' <;> try (
       simp [bvarLiftsIdx, mapBVarAt]
-      cases h₁ : bvarLowersIdx? (Nat.succ idx) lvl body <;> (solve | simp))
+      cases _h₁ : bvarLowersIdx? (Nat.succ idx) lvl body <;> (solve | simp))
     case lam s' body' =>
       rw [bvarLiftsIdx_lam]; simp
-      rw [← IH]; cases h : bvarLowersIdx? (Nat.succ idx) lvl body
+      rw [← IH]; cases _h : bvarLowersIdx? (Nat.succ idx) lvl body
       case none => simp
       case some bodyL => simp; intro _; apply Iff.intro Eq.symm Eq.symm
   case app s fn arg IHFn IHArg =>
     dsimp [bvarLowersIdx?]
     cases t' <;> try (
       simp [bvarLiftsIdx, mapBVarAt];
-      cases h₁ : bvarLowersIdx? idx lvl fn <;>
-      cases h₂ : bvarLowersIdx? idx lvl arg <;> (solve | simp))
+      cases _h₁ : bvarLowersIdx? idx lvl fn <;>
+      cases _h₂ : bvarLowersIdx? idx lvl arg <;> (solve | simp))
     case app s' fn' arg' =>
       rw [bvarLiftsIdx_app]; simp; rw [← IHFn, ← IHArg]
-      cases h₁ : bvarLowersIdx? idx lvl fn <;> simp
+      cases _h₁ : bvarLowersIdx? idx lvl fn <;> simp
       case some fnL =>
-        cases h₂ : bvarLowersIdx? idx lvl arg <;> simp
+        cases _h₂ : bvarLowersIdx? idx lvl arg <;> simp
         intro _ _; apply Iff.intro Eq.symm Eq.symm
 
 theorem LamTerm.maxEVarSucc_bvarLowersIdx?

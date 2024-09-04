@@ -8,7 +8,7 @@ namespace Auto
 -- **TODO**: Parser for POSIX ERE
 namespace Regex
 
-private def sort : List Nat → List Nat := 
+private def sort : List Nat → List Nat :=
   have : DecidableRel Nat.le := fun (x y : Nat) => inferInstanceAs (Decidable (x <= y))
   List.mergeSort Nat.le
 
@@ -156,7 +156,7 @@ partial def ERE.brackets : ERE → Array EREBracket
 | .repGeLe e _ _ => e.brackets
 | .comp es       => (es.map ERE.brackets).concatMap id
 | .plus es       => (es.map ERE.brackets).concatMap id
-| .attr e s      => e.brackets
+| .attr e _s     => e.brackets
 
 partial def ERE.normalizeBrackets : ERE → ERE
 | .bracket b     => .bracket (.inStr (toString b))
@@ -213,9 +213,9 @@ section
     --   Refer to `ERE.toADFA`, `ERE.ADFALex` and `DFA.run`
     cg  : CharGrouping σ
   deriving Inhabited
-  
+
   variable {σ : Type} [Hashable σ] [BEq σ] [ToString σ]
-  
+
   def CharGrouping.wf : CharGrouping σ → Bool :=
     fun ⟨ngroup, all, charMap⟩ =>
       let img := charMap.fold (fun hs _ n => hs.insert n) HashSet.empty
@@ -223,10 +223,10 @@ section
       let allInCharMap := all.toList.all (fun c => charMap.contains c)
       let sizeEq := all.size == charMap.size
       surj && allInCharMap && sizeEq
-  
+
   def CharGrouping.groups : CharGrouping σ → Array (HashSet σ) :=
     fun ⟨ngroup, _, charMap⟩ => Id.run <| do
-      let mut arr : Array (HashSet σ) := 
+      let mut arr : Array (HashSet σ) :=
         Array.mk ((List.range ngroup).map (fun _ => HashSet.empty))
       for (c, idx) in charMap.toList do
         arr := arr.modify idx (fun hs => hs.insert c)
@@ -285,7 +285,7 @@ section
 
   def ADFA.toString (a : ADFA σ) : String := ADFA.toStringAux a
     (fun l => ToString.toString l.toList)
-  
+
   instance : ToString (ADFA σ) where
     toString := ADFA.toString
 
@@ -297,7 +297,7 @@ section
 end
 
 def CharGrouping.toStringForChar (cg : CharGrouping Char) : String :=
-  CharGrouping.toStringAux cg (fun l => 
+  CharGrouping.toStringAux cg (fun l =>
     let sorted := sort (l.toList.map Char.toNat)
     let str := String.mk (sorted.map Char.ofNat)
     ToString.toString (repr str))
@@ -306,7 +306,7 @@ instance : ToString (CharGrouping Char) where
   toString := CharGrouping.toStringForChar
 
 def ADFA.toStringForChar (a : ADFA Char) : String :=
-  ADFA.toStringAux a (fun l => 
+  ADFA.toStringAux a (fun l =>
     let sorted := sort (l.toList.map Char.toNat)
     let str := String.mk (sorted.map Char.ofNat)
     ToString.toString (repr str))

@@ -629,6 +629,7 @@ theorem LamThmEquiv.ofExtensionalize
 def LamWF.intensionalizeEq1
   (wfEq : LamWF ltv ⟨pushLCtx argTy lctx, .mkEq s lhs rhs, s'⟩) :
   LamWF ltv ⟨lctx, .mkEq (.func argTy s) (.lam argTy lhs) (.lam argTy rhs), .base .prop⟩ :=
+  let _ := s -- silence unused variables lint
   match wfEq with
   | .ofApp _ (.ofApp _ _ wfl) wfr => LamWF.mkEq (.ofLam _ wfl) (.ofLam _ wfr)
 
@@ -1254,7 +1255,7 @@ theorem LamTerm.maxEVarSucc_headBetaAux
   (hs : HList (fun (_, arg) => arg.maxEVarSucc ≤ n) args) (ht : t.maxEVarSucc ≤ n) :
   (LamTerm.headBetaAux args t).maxEVarSucc ≤ n := by
   induction t generalizing args <;> try apply LamTerm.maxEVarSucc_beta hs ht
-  case app s fn arg IHFn IHArg =>
+  case app s fn arg IHFn _IHArg =>
     dsimp [maxEVarSucc] at ht; rw [Nat.max_le] at ht
     exact IHFn (.cons ht.right hs) ht.left
 
@@ -1474,7 +1475,7 @@ theorem LamEquiv.eqSymm?
   (wft : LamWF lval.toLamTyVal ⟨lctx, t, s⟩) (heq : t.eqSymm? = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app s (.app _ (.base (.eq _)) lhs) rhs, Eq.refl _ => by
+  | .app s (.app _ (.base (.eq _)) lhs) _rhs, Eq.refl _ => by
     cases wft.getFn.getFn.getBase
     match wft with
     | .ofApp _ (.ofApp _ (.ofBase (.ofEq _)) Hlhs) Hrhs =>
@@ -1515,7 +1516,7 @@ theorem LamEquiv.neSymm?
   (wft : LamWF lval.toLamTyVal ⟨lctx, t, s⟩) (heq : t.neSymm? = .some t') :
   LamEquiv lval lctx (.base .prop) t t' :=
   match t, heq with
-  | .app _ (.base .not) (.app s (.app _ (.base (.eq _)) lhs) rhs), Eq.refl _ => by
+  | .app _ (.base .not) (.app s (.app _ (.base (.eq _)) lhs) _rhs), Eq.refl _ => by
     cases wft.getArg.getFn.getFn.getBase
     match wft with
     | .ofApp _ (.ofBase .ofNot) (.ofApp _ (.ofApp _ (.ofBase (.ofEq _)) Hlhs) Hrhs) =>

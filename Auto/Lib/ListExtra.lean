@@ -116,10 +116,14 @@ def List.mergeSort (r : α → α → Prop) [DecidableRel r]  : List α → List
     let ls := (split (a :: b :: l))
     have e : split (a :: b :: l) = ⟨ls.1, ls.2⟩ := rfl
     have h := length_split_lt e
-    have := h.1
-    have := h.2
+    have _h₁ := h.1
+    have _h₂ := h.2
     exact merge r (mergeSort r ls.1) (mergeSort r ls.2)
   termination_by l => List.length l
+  decreasing_by
+    simp_wf
+    exact Nat.succ_lt_succ_iff.mp _h₁
+    exact _h₂
 
 theorem List.map_equiv (f₁ f₂ : α → β) (hequiv : ∀ x, f₁ x = f₂ x) : List.map f₁ xs = List.map f₂ xs := by
   induction xs
