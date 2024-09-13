@@ -172,7 +172,29 @@ section Test
       for si in siw do
         logInfo m!"{si}"
 
+  /--
+info: SimpleIndVal ⦗⦗ Nat, Ctors : [Nat.zero : Nat, Nat.succ : Nat → Nat] ⦘⦘
+  -/
+  #guard_msgs in
   #getExprAndApply[List.cons 2|skd]
+
+  /--
+info: SimpleIndVal ⦗⦗ Bool, Ctors : [false : Bool, true : Bool] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ List Bool, Ctors : [[] : List Bool, List.cons : Bool → List Bool → List Bool] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ Array Bool, Ctors : [Array.mk : List Bool → Array Bool], Projs : [Array.data] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ Nat, Ctors : [Nat.zero : Nat, Nat.succ : Nat → Nat] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ List Nat, Ctors : [[] : List Nat, List.cons : Nat → List Nat → List Nat] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ Array Nat, Ctors : [Array.mk : List Nat → Array Nat], Projs : [Array.data] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ Array Bool ×
+  Array Nat, Ctors : [Prod.mk : Array Bool → Array Nat → Array Bool × Array Nat], Projs : [Prod.fst, Prod.snd] ⦘⦘
+  -/
+  #guard_msgs in
   #getExprAndApply[(Array Bool × Array Nat)|skd]
 
   mutual
@@ -187,6 +209,14 @@ section Test
 
   end
 
+  /--
+info: SimpleIndVal ⦗⦗ Nat, Ctors : [Nat.zero : Nat, Nat.succ : Nat → Nat] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ tree, Ctors : [tree.leaf : Nat → tree, tree.node : treelist → tree] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ treelist, Ctors : [treelist.nil : treelist, treelist.cons : tree → treelist → treelist] ⦘⦘
+  -/
+  #guard_msgs in
   #getExprAndApply[tree|skd]
 
   mutual
@@ -201,6 +231,17 @@ section Test
 
   end
 
+  /--
+info: SimpleIndVal ⦗⦗ Nat, Ctors : [Nat.zero : Nat, Nat.succ : Nat → Nat] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ Int, Ctors : [Int.ofNat : Nat → Int, Int.negSucc : Nat → Int] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ Tree Int, Ctors : [Tree.leaf : Int → Tree Int, Tree.node : TreeList Int → Tree Int] ⦘⦘
+---
+info: SimpleIndVal ⦗⦗ TreeList
+  Int, Ctors : [TreeList.nil : TreeList Int, TreeList.cons : Tree Int → TreeList Int → TreeList Int] ⦘⦘
+  -/
+  #guard_msgs in
   #getExprAndApply[Tree Int|skd]
 
 end Test
